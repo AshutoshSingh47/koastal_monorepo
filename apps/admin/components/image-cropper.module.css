@@ -1,0 +1,12 @@
+:root {
+  --rc-border-color: transparent;
+}
+
+.cropShell :global(.ReactCrop__drag-handle) {
+  width: 10px;
+  height: 10px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  background: white;
+  box-shadow: 0 2px 6px rgba(2, 6, 23, 0.35);
+}

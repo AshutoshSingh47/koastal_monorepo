@@ -5,6 +5,9 @@
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
+    "storefront": "turbo dev --filter=storefront",
+    "admin": "turbo dev --filter=admin",
+    "api": "turbo dev --filter=api",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
@@ -15,7 +18,7 @@
     "turbo": "^2.8.1",
     "typescript": "5.9.3"
   },
-  "packageManager": "pnpm@10.4.1",
+  "packageManager": "pnpm@10.30.3",
   "engines": {
     "node": ">=20"
   }
