@@ -165,6 +165,7 @@ export async function updateUserStatus({
     await auth.api.signInMagicLink({
       body: {
         email: user.email,
+        name: user.name,
         callbackURL:
           process.env.ADMIN_APP_URL ?? "http://localhost:3001/dashboard",
       },

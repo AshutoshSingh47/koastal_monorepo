@@ -125,13 +125,16 @@ export const auth = betterAuth({
       storeToken: "hashed",
       sendMagicLink: async ({ email, url }) => {
         try {
+          const user = await db.user.findUnique({ where: { email } });
+          const name = user?.name ?? "there";
+
           await transporter.sendMail({
             from: '"Koastal Admin" <admin@koastal.com>',
             to: email,
             subject: "Secure Login Link for Koastal",
             html: `
               <div style="font-family: sans-serif; padding: 20px;">
-                <h2>Welcome to the Portal</h2>
+                <h2>Hi ${name}, Welcome to the Portal</h2>
                 <p>Click the button below to log in. This link is valid for 15 minutes and can only be used once.</p>
                 <a href="${url}" style="background: #000; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
                   Sign In to Dashboard
