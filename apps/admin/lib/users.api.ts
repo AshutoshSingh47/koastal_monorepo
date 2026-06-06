@@ -1,5 +1,5 @@
 import { endpoints } from "@/lib/endpoints";
-import type { AdminUser } from "@/types/auth";
+import { User as AdminUser } from "@workspace/database";
 import { apiClient } from "./api";
 
 export const USERS_QUERY_KEY = ["users"] as const;
@@ -19,7 +19,7 @@ export async function fetchUsers(
   const query = new URLSearchParams();
   if (params?.search) query.set("search", params.search);
   if (params?.role && params.role !== "all") query.set("role", params.role);
-  if (params?.status) query.set("status", params.status);
+  if (params?.status && params.status !== "all") query.set("status", params.status);
   if (params?.limit != null) query.set("limit", String(params.limit));
   if (params?.offset != null) query.set("offset", String(params.offset));
 
@@ -28,10 +28,7 @@ export async function fetchUsers(
   const res = await fetch(url, {
     headers: cookieHeader ? { Cookie: cookieHeader } : {},
     credentials: "include",
-    cache: "force-cache",
-    next: {
-      tags: [...USERS_QUERY_KEY],
-    },
+    cache: "no-store",
   });
 
   if (!res.ok) {

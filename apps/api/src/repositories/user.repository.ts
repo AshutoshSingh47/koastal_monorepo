@@ -1,5 +1,5 @@
-import type { User } from "@prisma/client";
-import { Status } from "@prisma/client";
+import type { Prisma, User } from "@workspace/database";
+import { Status } from "@workspace/database";
 import { db } from "../lib/prisma";
 import { GetUsersFilters } from "../types/user";
 
@@ -29,23 +29,38 @@ export async function createUser(
 }
 
 export async function getUsers(filters: GetUsersFilters) {
-  const { status, search, role, limit, offset } = filters;
-  return db.user.findMany({
-    where: {
-      status: status ?? { not: Status.DEACTIVATED },
-      role: role ?? undefined,
-      ...(search && {
-        OR: [
-          { firstName: { contains: search, mode: "insensitive" } },
-          { lastName: { contains: search, mode: "insensitive" } },
-          { email: { contains: search, mode: "insensitive" } },
-        ],
-      }),
+  const { status, search, role, limit = 10, offset = 0 } = filters;
+  const where: Prisma.UserWhereInput = {
+    status: status,
+    role: role ?? undefined,
+    ...(search && {
+      OR: [
+        { firstName: { contains: search, mode: "insensitive" } },
+        { lastName: { contains: search, mode: "insensitive" } },
+        { email: { contains: search, mode: "insensitive" } },
+      ],
+    }),
+  };
+
+  const [users, total] = await Promise.all([
+    db.user.findMany({
+      where,
+      take: limit,
+      skip: offset,
+      orderBy: { createdAt: "desc" },
+    }),
+    db.user.count({ where }),
+  ]);
+
+  return {
+    users,
+    meta: {
+      total,
+      page: Math.floor(offset / limit) + 1,
+      pageSize: limit,
+      totalPage: Math.ceil(total / limit),
     },
-    take: limit,
-    skip: offset,
-    orderBy: { createdAt: "desc" },
-  });
+  };
 }
 
 export async function updateStatus(id: string, status: Status) {

@@ -1,4 +1,4 @@
-import { Role, Status } from "@prisma/client";
+import { Role, Status } from "@workspace/database";
 import type { Request } from "express";
 
 export interface CreateAdminBody {

@@ -1,5 +1,5 @@
-import { Status } from "@prisma/client";
-import type { User } from "@prisma/client";
+import { Status } from "@workspace/database";
+import type { User } from "@workspace/database";
 import { auth } from "../lib/auth";
 import { db } from "../lib/prisma";
 import { DEFAULT_ADMIN_PERMISSIONS } from "../lib/resources";

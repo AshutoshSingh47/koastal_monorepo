@@ -6,6 +6,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@workspace/ui/components/button";
 import {
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -61,7 +62,11 @@ export function InviteDialogModal({ onClose }: InviteDialogModalProps) {
   return (
     <DialogContent className="sm:max-w-md">
       <DialogHeader>
-        <DialogTitle>Add a new team member</DialogTitle>
+        <DialogTitle>Add team member</DialogTitle>
+        <DialogDescription>
+          They'll receive an email invite and appear as Pending until they
+          accept.
+        </DialogDescription>
       </DialogHeader>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
         <Controller
@@ -88,9 +93,7 @@ export function InviteDialogModal({ onClose }: InviteDialogModalProps) {
           control={control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="email">
-                Email address <span className="text-destructive">*</span>
-              </FieldLabel>
+              <FieldLabel htmlFor="email">Email address</FieldLabel>
               <Input
                 {...field}
                 id="email"

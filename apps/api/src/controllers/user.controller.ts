@@ -68,7 +68,7 @@ export async function getAllUsersHandler(
   try {
     const { status, search, role, limit, offset } = req.query;
 
-    const users = await getUsers({
+    const data = await getUsers({
       status: status as GetUsersFilters["status"],
       search,
       role: role as GetUsersFilters["role"],
@@ -76,7 +76,9 @@ export async function getAllUsersHandler(
       offset: offset ? parseInt(offset, 10) : undefined,
     });
 
-    return res.status(200).json({ data: users });
+    const { users, meta } = data;
+
+    return res.status(200).json({ data: users, meta: meta });
   } catch (error) {
     next(error);
   }
